@@ -1,0 +1,42 @@
+# Daily Task Organizer
+
+This project helps you organize your daily tasks into two categories: **completed tasks** and **incomplete tasks**.
+
+## How It Works
+
+1. **Start of the Day:**  
+   Create a checklist of tasks you want to accomplish.
+
+2. **End of the Day:**  
+   Review your checklist:
+   - If a task is finished, move it to the **completed tasks** list.
+   - If a task is not finished, move it to the **incomplete tasks** list.
+
+By the end of each day, you’ll have a clear overview of what you completed and what still needs attention.
+
+## Features
+
+- Create a daily checklist of tasks.
+- Mark tasks as completed or incomplete.
+- View lists of completed and incomplete tasks.
+
+## Example
+
+```
+Today's Checklist:
+- Finish project report
+- Exercise for 30 minutes
+- Read a book chapter
+
+End of Day Review:
+Completed Tasks:
+- Finish project report
+- Exercise for 30 minutes
+
+Incomplete Tasks:
+- Read a book chapter
+```
+
+## Requirements
+
+- Python 3.x (if implemented
