@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India States Population Map</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .map-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            min-width: 200px;
+        }
+        
+        .tooltip.show {
+            opacity: 1;
+        }
+        
+        .state-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #ffeb3b;
+        }
+        
+        .population {
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 10px;
+            font-size: 12px;
+            color: #555;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+        
+        .info-panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .info-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .info-panel p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* State colors based on population ranges */
+        .state-low { fill: #fee5d9; stroke: #636363; stroke-width: 0.5; }
+        .state-medium { fill: #fcae91; stroke: #636363; stroke-width: 0.5; }
+        .state-high { fill: #fb6a4a; stroke: #636363; stroke-width: 0.5; }
+        .state-very-high { fill: #de2d26; stroke: #636363; stroke-width: 0.5; }
+        .state-extreme { fill: #a50f15; stroke: #636363; stroke-width: 0.5; }
+        
+        .state-path {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .state-path:hover {
+            stroke: #000;
+            stroke-width: 2;
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇮🇳 India States Population Map</h1>
+        
+        <div class="map-container">
+            <svg width="800" height="600" viewBox="0 0 800 600">
+                <!-- Simplified India map with major states -->
+                <!-- Jammu & Kashmir -->
+                <path class="state-path state-medium" data-state="Jammu & Kashmir" data-population="12,548,926" 
+                      d="M200 50 L280 40 L300 80 L280 120 L240 100 L200 90 Z"/>
+                
+                <!-- Himachal Pradesh -->
+                <path class="state-path state-low" data-state="Himachal Pradesh" data-population="6,864,602" 
+                      d="M250 90 L300 80 L320 100 L300 120 L270 110 Z"/>
+                
+                <!-- Punjab -->
+                <path class="state-path state-high" data-state="Punjab" data-population="27,704,236" 
+                      d="M220 100 L270 90 L280 120 L250 130 L220 120 Z"/>
+                
+                <!-- Haryana -->
+                <path class="state-path state-high" data-state="Haryana" data-population="25,353,081" 
+                      d="M270 120 L320 110 L330 140 L300 150 L270 140 Z"/>
+                
+                <!-- Delhi -->
+                <path class="state-path state-high" data-state="Delhi" data-population="16,787,941" 
+                      d="M290 130 L310 125 L315 140 L300 145 L290 140 Z"/>
+                
+                <!-- Uttar Pradesh -->
+                <path class="state-path state-extreme" data-state="Uttar Pradesh" data-population="199,812,341" 
+                      d="M280 140 L400 130 L420 180 L380 200 L320 190 L280 170 Z"/>
+                
+                <!-- Uttarakhand -->
+                <path class="state-path state-medium" data-state="Uttarakhand" data-population="10,116,752" 
+                      d="M320 100 L360 90 L380 120 L350 130 L320 120 Z"/>
+                
+                <!-- Rajasthan -->
+                <path class="state-path state-very-high" data-state="Rajasthan" data-population="68,548,437" 
+                      d="M180 140 L280 130 L300 200 L250 220 L200 210 L180 180 Z"/>
+                
+                <!-- Madhya Pradesh -->
+                <path class="state-path state-very-high" data-state="Madhya Pradesh" data-population="72,597,565" 
+                      d="M280 200 L420 190 L440 240 L400 260 L350 250 L300 240 Z"/>
+                
+                <!-- Gujarat -->
+                <path class="state-path state-very-high" data-state="Gujarat" data-population="60,383,628" 
+                      d="M150 220 L250 210 L270 260 L220 280 L170 270 L150 250 Z"/>
+                
+                <!-- Maharashtra -->
+                <path class="state-path state-extreme" data-state="Maharashtra" data-population="112,372,972" 
+                      d="M250 260 L400 250 L420 300 L380 320 L320 310 L280 300 Z"/>
+                
+                <!-- Goa -->
+                <path class="state-path state-low" data-state="Goa" data-population="1,457,723" 
+                      d="M280 320 L300 315 L305 330 L290 335 L280 330 Z"/>
+                
+                <!-- Karnataka -->
+                <path class="state-path state-very-high" data-state="Karnataka" data-population="61,130,704" 
+                      d="M280 330 L380 320 L400 370 L360 390 L320 380 L290 370 Z"/>
+                
+                <!-- Kerala -->
+                <path class="state-path state-high" data-state="Kerala" data-population="33,387,677" 
+                      d="M290 390 L320 385 L330 420 L310 440 L290 435 L285 410 Z"/>
+                
+                <!-- Tamil Nadu -->
+                <path class="state-path state-very-high" data-state="Tamil Nadu" data-population="72,138,958" 
+                      d="M330 380 L400 370 L420 420 L380 440 L340 430 L320 400 Z"/>
+                
+                <!-- Andhra Pradesh -->
+                <path class="state-path state-high" data-state="Andhra Pradesh" data-population="49,386,799" 
+                      d="M380 320 L450 310 L470 350 L440 370 L400 360 Z"/>
+                
+                <!-- Telangana -->
+                <path class="state-path state-high" data-state="Telangana" data-population="35,003,674" 
+                      d="M400 300 L440 290 L450 320 L420 330 L400 320 Z"/>
+                
+                <!-- Chhattisgarh -->
+                <path class="state-path state-high" data-state="Chhattisgarh" data-population="25,545,198" 
+                      d="M420 240 L480 230 L500 270 L470 280 L440 270 Z"/>
+                
+                <!-- Odisha -->
+                <path class="state-path state-high" data-state="Odisha" data-population="42,000,000" 
+                      d="M480 270 L530 260 L550 300 L520 320 L490 310 Z"/>
+                
+                <!-- Jharkhand -->
+                <path class="state-path state-high" data-state="Jharkhand" data-population="32,988,134" 
+                      d="M480 200 L530 190 L550 230 L520 240 L490 230 Z"/>
+                
+                <!-- West Bengal -->
+                <path class="state-path state-extreme" data-state="West Bengal" data-population="91,347,736" 
+                      d="M530 180 L580 170 L600 220 L570 240 L540 230 Z"/>
+                
+                <!-- Bihar -->
+                <path class="state-path state-extreme" data-state="Bihar" data-population="104,000,000" 
+                      d="M420 160 L520 150 L540 190 L500 200 L450 190 Z"/>
+                
+                <!-- Sikkim -->
+                <path class="state-path state-low" data-state="Sikkim" data-population="607,688" 
+                      d="M580 140 L595 135 L600 150 L585 155 Z"/>
+                
+                <!-- Arunachal Pradesh -->
+                <path class="state-path state-low" data-state="Arunachal Pradesh" data-population="1,382,611" 
+                      d="M600 100 L680 90 L700 130 L670 140 L620 130 Z"/>
+                
+                <!-- Assam -->
+                <path class="state-path state-high" data-state="Assam" data-population="31,169,272" 
+                      d="M580 150 L650 140 L670 180 L640 190 L600 180 Z"/>
+                
+                <!-- Meghalaya -->
+                <path class="state-path state-low" data-state="Meghalaya" data-population="2,964,007" 
+                      d="M620 180 L650 175 L660 195 L640 200 L620 195 Z"/>
+                
+                <!-- Nagaland -->
+                <path class="state-path state-low" data-state="Nagaland" data-population="1,980,602" 
+                      d="M660 160 L680 155 L690 175 L670 180 Z"/>
+                
+                <!-- Manipur -->
+                <path class="state-path state-low" data-state="Manipur" data-population="2,855,794" 
+                      d="M650 190 L670 185 L680 205 L660 210 Z"/>
+                
+                <!-- Mizoram -->
+                <path class="state-path state-low" data-state="Mizoram" data-population="1,091,014" 
+                      d="M640 210 L660 205 L670 225 L650 230 Z"/>
+                
+                <!-- Tripura -->
+                <path class="state-path state-low" data-state="Tripura" data-population="3,671,032" 
+                      d="M600 200 L620 195 L630 215 L610 220 Z"/>
+            </svg>
+            
+            <div class="tooltip" id="tooltip">
+                <div class="state-name" id="stateName"></div>
+                <div class="population" id="population"></div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #fee5d9;"></div>
+                <span>Low (< 5M)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #fcae91;"></div>
+                <span>Medium (5M - 15M)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #fb6a4a;"></div>
+                <span>High (15M - 50M)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #de2d26;"></div>
+                <span>Very High (50M - 100M)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #a50f15;"></div>
+                <span>Extreme (> 100M)</span>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h3>Interactive Population Map of India</h3>
+            <p>Hover over any state to see its name and population. States are color-coded based on population ranges. 
+            Data represents approximate population figures based on recent census estimates.</p>
+        </div>
+    </div>
+    
+    <script>
+        const tooltip = document.getElementById('tooltip');
+        const stateName = document.getElementById('stateName');
+        const population = document.getElementById('population');
+        const states = document.querySelectorAll('.state-path');
+        
+        states.forEach(state => {
+            state.addEventListener('mouseenter', (e) => {
+                const stateData = e.target.dataset;
+                stateName.textContent = stateData.state;
+                population.textContent = `Population: ${stateData.population}`;
+                tooltip.classList.add('show');
+            });
+            
+            state.addEventListener('mousemove', (e) => {
+                const rect = e.target.getBoundingClientRect();
+                const containerRect = document.querySelector('.map-container').getBoundingClientRect();
+                
+                tooltip.style.left = (e.clientX - containerRect.left + 10) + 'px';
+                tooltip.style.top = (e.clientY - containerRect.top - 10) + 'px';
+            });
+            
+            state.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
+        });
+        
+        // Add some animation on page load
+        window.addEventListener('load', () => {
+            states.forEach((state, index) => {
+                state.style.opacity = '0';
+                state.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    state.style.transition = 'all 0.5s ease';
+                    state.style.opacity = '1';
+                    state.style.transform = 'scale(1)';
+                }, index * 50);
+            });
+        });
+    </script>
+</body>
+</html>
